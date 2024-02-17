@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Color Buttons</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        text-align: center;
+        margin-top: 50px;
+      }
+      .color-button {
+        display: inline-block;
+        margin: 10px;
+        width: 100px;
+        height: 50px;
+        border: none;
+        cursor: pointer;
+      }
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+      }
+
+      .container {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .color-button {
+        flex-grow: 1;
+        height: 100vh;
+        max-width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div id="buttonContainer"></div>
+    </div>
+
+    <!-- Include seedrandom library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+
+    <script>
+      const seed = prompt("Seed the RNG");
+      boxCount = 5;
+      populateButtonContainer(boxCount);
+
+      function populateButtonContainer(numBoxes) {
+        // Container for buttons
+        const buttonContainer = document.getElementById("buttonContainer");
+        buttonContainer.innerHTML = "";
+
+        for (let i = 0; i < numBoxes; i++) {
+          const button = document.createElement("button");
+
+          // Generate a random color based on the color name
+          const randomColor = generateRandomColor(seed);
+
+          // Set the background color of the button to the random color
+          button.style.backgroundColor = randomColor;
+
+          // Add a class to style the button
+          button.classList.add("color-button");
+
+          // Append the button to the button container
+          buttonContainer.appendChild(button);
+        }
+
+        // Shuffle the buttons inside buttonContainer
+        const buttons = Array.from(buttonContainer.children);
+        buttons[0].style.backgroundColor = "red";
+        buttons[0].addEventListener("click", () => {
+          boxCount += 2;
+          populateButtonContainer(boxCount);
+        });
+        buttons[0].style.backgroundColor = adjustButtonColor(
+          buttons[0].style.backgroundColor,
+          10
+        );
+        shuffleArray(buttons);
+        buttons.forEach((button) => buttonContainer.appendChild(button));
+      }
+
+      function generateRandomColor(seed) {
+        const rng = new Math.seedrandom(seed);
+
+        const red = Math.floor(rng() * 256);
+        const green = Math.floor(rng() * 256);
+        const blue = Math.floor(rng() * 256);
+        const color = `#${red.toString(16).padStart(2, "0")}${green
+          .toString(16)
+          .padStart(2, "0")}${blue.toString(16).padStart(2, "0")}`;
+
+        return color;
+      }
+
+      function perturbColor(red, blue, green, amount) {
+        const rng = new Math.seedrandom(seed);
+      }
+
+      function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+      }
+
+      function adjustButtonColor(currentColor, amount) {
+        // Apply the new background color to the button
+        return "blue";
+      }
+    </script>
+  </body>
+</html>
